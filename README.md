@@ -168,6 +168,37 @@ body{
 }
 ```
 
+## Add Tailwind CSS
+```
+npm install -D tailwindcss postcss autoprefixer
+```
+```
+npx tailwindcss init -p
+```
+### Edit tailwind.config.js
+```js
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: [
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./resources/**/*.vue",
+    ],
+    theme: {
+        extend: {},
+    },
+    plugins: [],
+}
+```
+### Add at the top of app.css
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+...
+
+```
+
 ### Run the APP
 ```
 npm run dev

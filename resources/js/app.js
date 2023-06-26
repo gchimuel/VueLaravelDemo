@@ -7,4 +7,5 @@ import App from './layouts/App.vue';
 
 const router = createRouter(createWebHistory())
 const app = createApp(App)
-app.use(router).mount('#app')
+app.use(router)
+app.mount('#app')

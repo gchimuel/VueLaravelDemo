@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('main');
-// });
-
 Route::get('/{page?}', function() {
     return view('main');
 })->where('page', '[\/\w\.-]*');
+
+Route::post('/query', function(Request $r) {
+    return response()->json([$r->all()]);
+});
