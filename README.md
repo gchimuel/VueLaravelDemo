@@ -15,40 +15,110 @@ npm install vue@next vue-loader@next @vitejs/plugin-vue
 ```
 npm install axios
 ```
+```
+npm install vue-router
+```
 
 ## Open the file called vite.config.js and add vue() to the config:
-```
-import vue from '@vitejs/plugin-vue'
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin'; //add this
+import vue from "@vitejs/plugin-vue";
+
+export default defineConfig({
+    plugins: [
+        vue(), //add this
+        laravel({
+            input: ['resources/css/app.css', 'resources/js/app.js'],
+            refresh: true,
+        }),
+    ],
+});
 ```
 
 ## Edit the app.js file and the snippet for the Vue 3 app bootstrap:
+```js
+import './bootstrap';
+import { createApp } from 'vue'
+import { createWebHistory } from 'vue-router'
+
+import createRouter from './router.js'
+import App from './layouts/App.vue';
+
+const router = createRouter(createWebHistory())
+const app = createApp(App)
+app.use(router).mount('#app')
 ```
-require('./bootstrap');
 
-import {createApp} from 'vue'
+## Create router.js
+```js
+import {createRouter} from 'vue-router'
 
-import App from './App.vue'
+import Home from './pages/Home.vue';
+import About from './pages/About.vue';
 
-createApp(App).mount("#app")
+const routes = [
+    {
+      path: '/',
+      component: Home
+    },
+
+    {
+      path: '/about/',
+      component: About
+    }
+  ]
+
+export default function (history) {
+    return createRouter({
+        history,
+        routes
+    })
+}
 ```
 
 ## Create a file called App.vue and add the following:
-```
+```html
 <template>
-    <h1> Hello, Vuejs with Laravel </h1>
+    <div id="top-nav">
+        <router-link to="/">Home</router-link>
+        <router-link to="/about/">About</router-link>
+    </div>
+
+    <div id="content">
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
     export default {
-        setup() {
 
-        }
-    }
+    };
 </script>
 ```
 
-## Edit welcome.blade.php
+## Create a file Home.vue and About.vue using this format:
+```html
+<template>
+    Home
+</template>
+
+<script>
+    export default {
+
+    };
+</script>
 ```
+
+## Edit route
+```php
+Route::get('/{page?}', function() {
+    return view('main');
+})->where('page', '[\/\w\.-]*');
+```
+
+## Edit main.blade.php
+```html
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -65,9 +135,37 @@ createApp(App).mount("#app")
     </head>
     <body class="antialiased">
         <div id="app"></div>
+
         @vite('resources/js/app.js')
     </body>
 </html>
+```
+
+## Edit app.css
+```css
+body{
+    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#top-nav{
+    background-color: black;
+    padding: 20px 0;
+}
+
+#top-nav a{
+    padding: 20px;
+    color: #fff;
+    text-decoration: none;
+}
+#top-nav a:hover, .router-link-active{
+    background: #fff;
+    color: #000!important;
+}
+
+#content{
+    padding: 20px;
+}
 ```
 
 ### Run the APP
