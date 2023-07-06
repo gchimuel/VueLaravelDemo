@@ -203,3 +203,38 @@ export default {
 ```
 npm run dev
 ```
+
+
+### Add ChatGPT API
+```
+composer require orhanerday/open-ai
+```
+
+```php
+use Orhanerday\OpenAi\OpenAi;
+...
+$open_ai = new OpenAi(env('OPENAI_API_KEY'));
+
+$chat = $open_ai->chat([
+    'model' => 'gpt-3.5-turbo',
+    'messages' => [
+        [
+            "role" => "user",
+            "content" => $r->input('query')
+        ]
+    ],
+    'temperature' => 1.0,
+    'max_tokens' => 4000,
+    'frequency_penalty' => 0,
+    'presence_penalty' => 0,
+]);
+
+// decode response
+$d = json_decode($chat);
+
+return response()->json([
+    'input' => $r->all(),
+    'data' => $d,
+    'reply' => $d->choices[0]->message->content ?? ''
+]);
+```
