@@ -1,7 +1,7 @@
 import {createRouter} from 'vue-router'
 
 import Home from './pages/Home.vue';
-import About from './pages/About.vue';
+import ChatGPT from './pages/ChatGPT.vue';
 import Post from './pages/Post.vue';
 
 const routes = [
@@ -10,8 +10,8 @@ const routes = [
       component: Home
     },
     {
-      path: '/about/',
-      component: About
+      path: '/chatGPT/',
+      component: ChatGPT
     },
     {
       path: '/post/',
